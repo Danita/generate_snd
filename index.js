@@ -210,7 +210,6 @@ if (typeof filename === 'undefined') {
 
 let manips = getManips(filename);
 console.log(`# Read ${manips.length} manipulators from file ${filename}.`);
-// manips = manips.slice(0,5); // fixme
 let attachments = manips.map(manip => buildAttachmentsForManip(manip)).filter(att => {
 	return att !== null
 });
