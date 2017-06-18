@@ -195,11 +195,18 @@ let filename;
 
 Commander
 	.version('1.0.0')
+	.usage('<input.obj> > <output.snd>')
 	.arguments('<ObjFilename>')
 	.action(function (ObjFilename) {
 		filename = ObjFilename;
 	})
 	.parse(process.argv);
+
+if (typeof filename === 'undefined') {
+	console.error('No input file specified!');
+	Commander.outputHelp();
+	process.exit(1);
+}
 
 let manips = getManips(filename);
 console.log(`# Read ${manips.length} manipulators from file ${filename}.`);
@@ -210,4 +217,4 @@ let attachments = manips.map(manip => buildAttachmentsForManip(manip)).filter(at
 console.log(`# Built ${attachments.length} attachments.`);
 console.log();
 attachments.forEach(att => console.log(att));
-process.exit(1);
+process.exit(0);
