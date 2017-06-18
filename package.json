@@ -1,10 +1,14 @@
 {
   "name": "generate_snd",
+  "description": "CLI utility to create X-Plane .snd definitions from .obj files",
   "version": "1.0.0",
   "author": "Daniela Rodriguez Careri <dcareri@gmail.com>",
-  "main": "index.js",
+  "main": "generate_snd.js",
   "license": "MIT",
   "dependencies": {
     "commander": "^2.9.0"
+  },
+  "bin" : {
+    "generate_snd" : "./generate_snd.js"
   }
 }

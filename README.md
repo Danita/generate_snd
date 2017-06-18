@@ -4,19 +4,25 @@ Scans the provided `.obj` file for `ATTR_manip_*` manipulator commands and gener
 
 ## Requirements
 
-* NodeJS
-* npm or Yarn
+* [NodeJS](https://nodejs.org/es/) > 6.x
+* [npm](https://nodejs.org/es/) or [Yarn](https://yarnpkg.com/en/)
 
 Just clone the repo and run `npm install` or `yarn install`.
 
 ## Usage
 
 ```
-./index.js path/to/input.obj > path/to/output.snd
+./generate_snd.js path/to/input.obj > path/to/output.snd
 ```
 
 * `input.obj` aircraft cockpit file.
 * `output.snd` .snd compatible format which you can include into your own definition. 
+
+Alternatively, you can install the tool globally, with `npm install -g` on the project directory. Then you could open the shell on any directory and directly execute:
+
+```
+generate_snd path/to/input.obj > path/to/output.snd
+```
 
 ## Notes
 
