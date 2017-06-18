@@ -7,7 +7,22 @@ Scans the provided `.obj` file for `ATTR_manip_*` manipulator commands and gener
 * [NodeJS](https://nodejs.org/es/) > 6.x
 * [npm](https://nodejs.org/es/) or [Yarn](https://yarnpkg.com/en/)
 
-Just clone the repo and run `npm install` or `yarn install`.
+## Installation
+
+1. Clone the repo and run `npm install` or `yarn install`.
+2. Create an `events.json` file with your events using this format:
+
+```json
+{
+  "BUTTON": "/model/mymodel/switches/button",
+  "ROTARY_SMALL": "/model/mymodel/switches/rotary1",
+  "ROTARY_MEDIUM": "/model/mymodel/switches/rotary2",
+  "ROTARY_LARGE": "/model/mymodel/switches/rotary3",
+  "SWITCH": "/model/mymodel/switches/switch"
+}
+```
+
+Obviously replacing the events names with your own. An example `events.json.example` file is included that you can use as a starting point. Rename it as `events.json` and edit at will.
 
 ## Usage
 

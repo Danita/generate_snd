@@ -1,0 +1,7 @@
+{
+  "BUTTON": "/model/mymodel/switches/button",
+  "ROTARY_SMALL": "/model/mymodel/switches/rotary1",
+  "ROTARY_MEDIUM": "/model/mymodel/switches/rotary2",
+  "ROTARY_LARGE": "/model/mymodel/switches/rotary3",
+  "SWITCH": "/model/mymodel/switches/switch"
+}

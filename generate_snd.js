@@ -20,13 +20,7 @@ const
  * Configure according to the FMOD events you want to use
  * @type {object}
  */
-const events = {
-	BUTTON: '/model/b732/equipment/switches/switch_metal_3',
-	ROTARY_SMALL: '/model/b732/equipment/switches/switch_rotary_1',
-	ROTARY_MEDIUM: '/model/b732/equipment/switches/switch_rotary_1',
-	ROTARY_LARGE: '/model/b732/equipment/switches/switch_rotary_1',
-	SWITCH: '/model/b732/equipment/switches/switch_metal_1',
-};
+const events = require('./events.json');
 
 /**
  * Which cursor types should trigger which events
