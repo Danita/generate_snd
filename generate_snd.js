@@ -71,8 +71,8 @@ function pushStrategy(params) {
 		dref = params[3];
 
 	return "\tEVENT_NAME " + event + "\r\n" +
-		"\tEVENT_START_COND " + dref + " = " + v_down +  "\r\n" +
-		"\tEVENT_END_COND " + dref + " = " + v_up +  "\r\n" // TODO: This could be optional.
+		"\tEVENT_START_COND " + dref + " == " + v_down +  "\r\n" +
+		"\tEVENT_END_COND " + dref + " == " + v_up +  "\r\n" // TODO: This could be optional.
 	;
 }
 
@@ -88,7 +88,7 @@ function toggleStrategy(params) {
 
 	return "\tEVENT_NAME " + event + "\r\n" +
 		"\tEVENT_START_COND ABS_DELTA=" + dref + " > 0\r\n" +
-		"\tEVENT_END_COND ABS_DELTA=" + dref + " = 0\r\n" // TODO: this could be optional
+		"\tEVENT_END_COND ABS_DELTA=" + dref + " == 0\r\n" // TODO: this could be optional
 		;
 }
 
@@ -107,7 +107,7 @@ function deltaStrategy(params) {
 
 	return "\tEVENT_NAME " + event + "\r\n" +
 		"\tEVENT_START_COND DELTA=" + dref + (v_down > 0 ? " >= " + v_down : " <= " + v_down ) + "\r\n" +
-		"\tEVENT_END_COND DELTA=" + dref + " = 0\r\n"
+		"\tEVENT_END_COND DELTA=" + dref + " == 0\r\n"
 		;
 }
 
