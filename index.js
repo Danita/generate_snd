@@ -12,12 +12,10 @@ const
 	Commander = require('commander')
 ;
 
-function commandStrategy(params) {
-	return 'SARASA';
-}
-
 /**
+ * Generic event names
  * Configure according to the FMOD events you want to use
+ * @type {object}
  */
 const events = {
 	BUTTON: '/model/b732/equipment/switches/switch_metal_3',
@@ -27,23 +25,11 @@ const events = {
 	SWITCH: '/model/b732/equipment/switches/switch_metal_1',
 };
 
-const strategiesByManipType = {
-	'ATTR_manip_command': commandStrategy,
-	'ATTR_manip_command_axis': commandStrategy,
-	'ATTR_manip_push': commandStrategy,
-	'ATTR_manip_toggle': commandStrategy,
-	'ATTR_manip_delta': commandStrategy,
-	'ATTR_manip_wrap': commandStrategy,
-	'ATTR_manip_wheel': commandStrategy,
-	'ATTR_manip_command_knob': commandStrategy,
-	'ATTR_manip_switch_up_down': commandStrategy,
-	'ATTR_manip_switch_left_right': commandStrategy,
-	'ATTR_manip_axis_knob': commandStrategy,
-	'ATTR_manip_axis_switch_up_down': commandStrategy,
-	'ATTR_manip_axis_switch_left_right': commandStrategy,
-};
-
-const cursors = {
+/**
+ * Which cursor types should trigger which events
+ * @type {object}
+ */
+const eventsByCursorType = {
 	'four_arrows': events.BUTTON,
 	'hand': events.BUTTON,
 	'button': events.BUTTON,
@@ -65,27 +51,75 @@ const cursors = {
 	'arrow': events.SWITCH
 };
 
+function commandStrategy(params) {
+	let event = eventsByCursorType[params[0]],
+		dref = params[1];
+
+	return '';
+	console.log(params);
+	// return 'SARASA';
+}
+
+/**
+ * Which strategy function should be used with which manipulator type
+ * @type {object}
+ */
+const strategiesByManipType = {
+	'ATTR_manip_command': commandStrategy,
+	// 'ATTR_manip_command_axis': commandStrategy,
+	// 'ATTR_manip_push': commandStrategy,
+	// 'ATTR_manip_toggle': commandStrategy,
+	// 'ATTR_manip_delta': commandStrategy,
+	// 'ATTR_manip_wrap': commandStrategy,
+	// 'ATTR_manip_wheel': commandStrategy,
+	// 'ATTR_manip_command_knob': commandStrategy,
+	// 'ATTR_manip_switch_up_down': commandStrategy,
+	// 'ATTR_manip_switch_left_right': commandStrategy,
+	// 'ATTR_manip_axis_knob': commandStrategy,
+	// 'ATTR_manip_axis_switch_up_down': commandStrategy,
+	// 'ATTR_manip_axis_switch_left_right': commandStrategy,
+};
+
+/**
+ * Read valid lines from .obj filename
+ * @param filename
+ * @returns Array {idx: number, text: string}
+ */
 function getManips(filename) {
 	let ret = [];
-	let lines = fs.readFileSync(filename).toString().replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
-	lines.forEach(function(l) {
+	let lines = fs.readFileSync(filename).toString().replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+	for (let i = 0; i < lines.length; i++) {
+		let l = lines[i];
 		l = l.trim();
 		if (l.includes('ATTR_manip')) {
-			ret.push(l);
+			ret.push({
+				idx: i,
+				text: l
+			});
 		}
-	});
+	}
 	return ret;
 }
 
+/**
+ * Build attachment for a single line
+ * @param line
+ * @returns {*}
+ */
 function buildAttachment(line) {
 	let
 		ret = null,
-		parts = line.split(/\s+/g),
+		parts = line.text.split(/\s+/g),
 		manipType = parts[0],
 		strategyFn = strategiesByManipType[manipType]
 	;
 	if (strategyFn) {
-		ret = strategyFn(parts.slice(1));
+		ret = `# ${filename} line ${line.idx}
+BEGIN_SOUND_ATTACHMENT
+	VEH_PART cockpit 0
+${strategyFn(parts.slice(1))}
+END_SOUND_ATTACHMENT
+`;
 	}
 	return ret;
 }
@@ -102,11 +136,12 @@ Commander
 
 let manips = getManips(filename);
 console.log(`# Read ${manips.length} manipulators from file ${filename}.`);
-let attachments = manips.map(line => buildAttachment(line)).filter(att => { return att !== null});
+// manips = manips.slice(0,5); // fixme
+let attachments = manips.map(line => buildAttachment(line)).filter(att => {
+	return att !== null
+});
 console.log(`# Built ${attachments.length} attachments.`);
-
+console.log();
 console.log(attachments.forEach(att => console.log(att)));
 
-// console.log(exports);
-// console.log(entities);
-// process.exit(1);
+process.exit(1);
