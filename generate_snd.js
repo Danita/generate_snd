@@ -72,7 +72,7 @@ function pushStrategy(params) {
 
 	return "\tEVENT_NAME " + event + "\r\n" +
 		"\tEVENT_START_COND " + dref + " == " + v_down +  "\r\n" +
-		"\tEVENT_END_COND " + dref + " == " + v_up +  "\r\n" // TODO: This could be optional.
+		"\tCUE_TRIGGER_COND " + dref + " == " + v_up +  "\r\n"
 	;
 }
 
