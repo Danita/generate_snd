@@ -27,11 +27,13 @@ Obviously replacing the events names with your own. An example `events.json.exam
 ## Usage
 
 ```
-./generate_snd.js path/to/input.obj > path/to/output.snd
+./generate_snd.js [options] <path/to/input.obj> > <path/to/output.snd>
 ```
 
 * `input.obj` aircraft cockpit file.
-* `output.snd` .snd compatible format which you can include into your own definition. 
+* `output.snd` .snd compatible format which you can include into your own definition.
+* `options`:
+	* `-i, --ignorelines`: Pass a comma-separated list of line numbers to ignore from the cockpit file. 
 
 Alternatively, you can install the tool globally, with `npm install -g` on the project directory. Then you could open the shell on any directory and directly execute:
 

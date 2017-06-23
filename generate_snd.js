@@ -4,8 +4,7 @@
  * Build sound attachments according to ATTR_manip_* commands
  * @author Daniela Rodriguez Careri <dcareri@gmail.com>
  * @todo param to ignore datarefs
- * @todo param to ignore lines
- *
+ * @todo support events by cursor and manip combinations (e.g.: manip_push + hand)
  */
 
 const
@@ -135,20 +134,26 @@ const strategiesByManipType = {
 
 /**
  * Read valid lines from .obj filename
- * @param filename
+ * @param filename String
+ * @param ignoredLines Array
  * @returns Array {idx: number, text: string}
  */
-function getManips(filename) {
+function getManips(filename, ignoredLines) {
 	let ret = [];
 	let lines = fs.readFileSync(filename).toString().replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
 	for (let i = 0; i < lines.length; i++) {
-		let l = lines[i];
-		l = l.trim();
-		if (l.includes('ATTR_manip')) {
-			ret.push({
-				idx: i + 1,
-				text: l
-			});
+		let l = lines[i],
+			idx = i + 1
+		;
+
+		if (ignoredLines.indexOf(idx) === -1) {
+			l = l.trim();
+			if (l.includes('ATTR_manip')) {
+				ret.push({
+					idx: idx,
+					text: l
+				});
+			}
 		}
 	}
 	return ret;
@@ -189,8 +194,9 @@ let filename;
 
 Commander
 	.version('1.0.0')
-	.usage('<input.obj> > <output.snd>')
+	.usage('[options] <input.obj> > <output.snd>')
 	.arguments('<ObjFilename>')
+	.option('-i, --ignorelines <lines>', "Comma-separated line numbers from the source .obj file to exclude from process")
 	.action(function (ObjFilename) {
 		filename = ObjFilename;
 	})
@@ -202,7 +208,13 @@ if (typeof filename === 'undefined') {
 	process.exit(1);
 }
 
-let manips = getManips(filename);
+let ignoredLines = [];
+if (Commander.ignorelines) {
+	ignoredLines = Commander.ignorelines.split(',').map(n => {return parseInt(n)});
+	console.log(`# Ignoring lines: ${ignoredLines.join(', ')}`);
+}
+
+let manips = getManips(filename, ignoredLines);
 console.log(`# Read ${manips.length} manipulators from file ${filename}.`);
 let attachments = manips.map(manip => buildAttachmentsForManip(manip)).filter(att => {
 	return att !== null
